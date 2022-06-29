@@ -1,0 +1,42 @@
+import re
+
+def remover_caracteres(cnpj):
+    return re.sub(r'[^0-9]', '', cnpj)
+
+
+def converte_lista(cnpj):
+    cnpj_valor = []
+    for v in cnpj:
+        cnpj_valor.append(int(v))
+    return cnpj_valor
+
+
+def digito(valor):
+    d = 11 - (valor % 11)
+    if d > 9:
+        return 0
+    else:
+        return d
+
+
+cnpj = remover_caracteres(input('Digite o CNPJ: '))
+cnpj = converte_lista(cnpj)
+cnpj_confere = converte_lista(cnpj)
+del (cnpj_confere[12:14])
+
+conjunto1 = [5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2]
+conjunto2 = [6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2]
+
+valor1 = sum([x * y for x, y in zip(cnpj_confere, conjunto1)])
+
+cnpj_confere.append(digito(valor1))
+
+valor2 = sum([x * y for x, y in zip(cnpj_confere, conjunto2)])
+
+cnpj_confere.append(digito(valor2))
+
+
+if cnpj == cnpj_confere:
+    print('CNPJ é válido')
+else:
+    print('CNPJ inválido')
